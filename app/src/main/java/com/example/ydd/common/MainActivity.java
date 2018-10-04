@@ -20,6 +20,7 @@ import com.gprinter.io.PortManager;
 
 import java.io.IOException;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.ydd.mylibrary.print.PrinterChangeListener.ESC_STATE_COVER_OPEN;
 import static com.example.ydd.mylibrary.print.PrinterChangeListener.ESC_STATE_ERR_OCCURS;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //初始化监听监听器,全局单例模式
-        printerChangeListener = PrinterChangeListener.getInstance(getApplicationContext());
+        printerChangeListener = PrinterChangeListener.getInstance(getApplicationContext(),new ConcurrentHashMap());
 
 
         //------------------------- 测试数据部分------------------------

@@ -22,6 +22,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 这个类用来处理打印机的的监听状态
+ *
+ * 1. 发送所有打印机状态单次查询指令
+ * 2. 发送所有打印机状态定时查询指令
+ * 3.
+ *
+ * @author dong
+ */
+
 public class PrinterChangeListener {
 
     /**
@@ -50,7 +60,7 @@ public class PrinterChangeListener {
 
 
     /**
-     *测试用的打印机map 实际开发进行替换
+     * 测试用的打印机map 实际开发进行替换成业务中打开打印机的map
      */
     public static ConcurrentHashMap<String, PortManager> concurrentMap;
 
@@ -70,12 +80,13 @@ public class PrinterChangeListener {
      */
     private static final int maximumPoolSize = CPU_COUNT * 2 + 1;
 
-
-    //初始化工作线程映射表（打印机名称，runnable）
+    /**
+     * 初始化工作线程映射表（打印机名称，runnable）
+     */
     public static HashMap<String, WorkRunnable> workPool = new HashMap(maximumPoolSize);
 
 
-    private static PrinterChangeListener printerChangeListener;
+    private static PrinterChangeListener printerChangeListener = null;
 
     /**
      * ESC查询打印机实时状态指令
@@ -103,14 +114,19 @@ public class PrinterChangeListener {
     private static Timer timer;
 
 
-    public static PrinterChangeListener getInstance(Context context) {
+    /**
+     * 返回一个单例模式下的当前对象
+     * @param context 传入上下文
+     * @param context 传入上下文
+     * @return
+     */
+    public static PrinterChangeListener getInstance(Context context,ConcurrentHashMap cMap) {
 
         if (printerChangeListener == null) {
 
             PrinterChangeListener.myContext = context.getApplicationContext();
 
             printerChangeListener = new PrinterChangeListener();
-
 
             data = new Vector<>(esc.length);
 
@@ -122,7 +138,7 @@ public class PrinterChangeListener {
             //最大线程数 maximumPoolSize 个
             executorService = newFixThreadPool(maximumPoolSize);
 
-            concurrentMap = new ConcurrentHashMap();
+           concurrentMap = cMap;
 
 
         }
@@ -149,7 +165,7 @@ public class PrinterChangeListener {
                 }
             }, 0, period);
 
-            Log.e("DOAING","开启周期命令");
+            Log.e("DOAING", "开启周期命令");
         }
 
     }
@@ -165,7 +181,7 @@ public class PrinterChangeListener {
             cancelTimer();
         }
 
-        Log.e("DOAING","发送单次监听");
+        Log.e("DOAING", "发送单次监听");
 
         sentCommand();
 
@@ -178,12 +194,12 @@ public class PrinterChangeListener {
     public String openAppointPrinterListener(String name) {
 
 
-      PortManager portManager =  concurrentMap.get(name);
+        PortManager portManager = concurrentMap.get(name);
 
-      if(portManager == null){
+        if (portManager == null) {
 
-          return null;
-      }
+            return null;
+        }
 
         //如果定时器开着，就去关闭
         if (timer != null) {
@@ -191,7 +207,7 @@ public class PrinterChangeListener {
             cancelTimer();
         }
 
-        Log.e("DOAING","发送指定打印机监听");
+        Log.e("DOAING", "发送指定打印机监听");
 
         try {
             portManager.writeDataImmediately(PrinterChangeListener.data, 0, PrinterChangeListener.data.size());
@@ -223,16 +239,16 @@ public class PrinterChangeListener {
 
             timer.cancel();
 
-            timer =null;
+            timer = null;
 
-            Log.e("DOAING","关闭周期命令");
+            Log.e("DOAING", "关闭周期命令");
 
 
         }
     }
 
     /**
-     * 添加一个新的打印机监听
+     * 向线程池添加一个新的打印机监听
      *
      * @param workRunnable
      */
@@ -257,7 +273,11 @@ public class PrinterChangeListener {
 
     }
 
-
+    /**
+     * 创建一个线程池
+     * @param size 通过设备的cpu核心数判断初始化指定大小的线程池
+     * @return 返回一个指定的线程池
+     */
     public static ExecutorService newFixThreadPool(int size) {
         return new ThreadPoolExecutor(size, size, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     }
@@ -310,7 +330,7 @@ public class PrinterChangeListener {
     }
 
     /**
-     * 打印机状态命令
+     * 发送所有打印机状态命令
      */
     public void executePrinterStatusCommand() {
         Iterator iterator = concurrentMap.entrySet().iterator();
