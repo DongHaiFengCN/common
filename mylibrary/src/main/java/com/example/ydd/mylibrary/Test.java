@@ -7,5 +7,6 @@ public class Test {
     public void test(){
 
         Log.e("DOAING","董海峰第一次测试");
+        Log.e("DOAING","董海峰第一次测试");
     }
 }
