@@ -6,6 +6,6 @@ public class Test {
 
     public void test(){
 
-        Log.e("DOAING","test1111111");
+        Log.e("DOAING","董海峰第一次测试");
     }
 }
