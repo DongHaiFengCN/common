@@ -1,4 +1,4 @@
-package com.example.ydd.mylibrary.print;
+package com.example.ydd.mylibrary.print.config;
 
 import android.content.Context;
 import android.content.Intent;

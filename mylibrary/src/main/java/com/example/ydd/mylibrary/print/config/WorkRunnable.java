@@ -1,4 +1,4 @@
-package com.example.ydd.mylibrary.print;
+package com.example.ydd.mylibrary.print.config;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +9,10 @@ import com.gprinter.io.PortManager;
 
 import java.io.IOException;
 
-import static com.example.ydd.mylibrary.print.PrinterChangeListener.PRINTER_URL;
-import static com.example.ydd.mylibrary.print.PrinterChangeListener.READ_BUFFER_ARRAY;
-import static com.example.ydd.mylibrary.print.PrinterChangeListener.READ_DATA;
-import static com.example.ydd.mylibrary.print.PrinterChangeListener.READ_NAME;
+import static com.example.ydd.mylibrary.print.config.PrinterChangeListener.PRINTER_URL;
+import static com.example.ydd.mylibrary.print.config.PrinterChangeListener.READ_BUFFER_ARRAY;
+import static com.example.ydd.mylibrary.print.config.PrinterChangeListener.READ_DATA;
+import static com.example.ydd.mylibrary.print.config.PrinterChangeListener.READ_NAME;
 
 public class WorkRunnable implements Runnable {
 
