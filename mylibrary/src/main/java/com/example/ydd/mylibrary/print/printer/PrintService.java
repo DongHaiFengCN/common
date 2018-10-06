@@ -21,7 +21,6 @@ public class PrintService {
     public PrintService(Context context){
         new PrinterCouchBase(context);
         Config.requestAllPower((Activity) context);
-        LeakCanary.install(((Activity) context).getApplication());
     }
     
     //注册打印机
