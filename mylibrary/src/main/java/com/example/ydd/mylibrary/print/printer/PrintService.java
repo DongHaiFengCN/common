@@ -1,5 +1,6 @@
 package com.example.ydd.mylibrary.print.printer;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.couchbase.lite.Document;
@@ -7,6 +8,7 @@ import com.gprinter.command.EscCommand;
 import com.gprinter.io.BluetoothPort;
 import com.gprinter.io.EthernetPort;
 import com.gprinter.io.PortManager;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +20,8 @@ public class PrintService {
 
     public PrintService(Context context){
         new PrinterCouchBase(context);
+        Config.requestAllPower((Activity) context);
+        LeakCanary.install(((Activity) context).getApplication());
     }
     
     //注册打印机

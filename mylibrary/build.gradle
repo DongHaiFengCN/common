@@ -18,6 +18,12 @@ android {
     productFlavors {
     }
     buildToolsVersion '28.0.2'
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs 'libs'//arr目录
+        }
+    }
 }
 
 dependencies {
@@ -25,4 +31,5 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     api files('libs/gprintersdkv1.jar')
     api 'com.couchbase.lite:couchbase-lite-android:2.0.0'
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 }
