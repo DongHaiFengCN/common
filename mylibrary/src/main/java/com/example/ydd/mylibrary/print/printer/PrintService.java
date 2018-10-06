@@ -106,6 +106,7 @@ public class PrintService {
                 return false;
             }
         }
+        mPort.openPort();
         try {
             mPort.writeDataImmediately(esc.getCommand(), 0, esc.getCommand().size());
         } catch (IOException e) {
