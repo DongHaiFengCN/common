@@ -1,5 +1,7 @@
 package com.example.ydd.mylibrary.print.printer;
 
+import android.content.Context;
+
 import com.couchbase.lite.Document;
 import com.gprinter.command.EscCommand;
 import com.gprinter.io.BluetoothPort;
@@ -13,6 +15,10 @@ import static com.example.ydd.mylibrary.print.printer.PrinterCouchBase.getAllPri
 import static com.example.ydd.mylibrary.print.printer.PrinterCouchBase.getSinglePrint;
 
 public class PrintService {
+
+    public PrintService(Context context){
+        new PrinterCouchBase(context);
+    }
     
     //注册打印机
     private PortManager registeredWifi(String address, String port){
