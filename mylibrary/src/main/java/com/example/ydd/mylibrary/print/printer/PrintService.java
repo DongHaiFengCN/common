@@ -8,7 +8,6 @@ import com.gprinter.command.EscCommand;
 import com.gprinter.io.BluetoothPort;
 import com.gprinter.io.EthernetPort;
 import com.gprinter.io.PortManager;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 import java.util.List;
