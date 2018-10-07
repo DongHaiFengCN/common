@@ -2,6 +2,7 @@ package com.example.ydd.mylibrary.print.printer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.couchbase.lite.Document;
 import com.gprinter.command.EscCommand;
@@ -17,7 +18,9 @@ import static com.example.ydd.mylibrary.print.printer.PrinterCouchBase.getSingle
 
 public class PrintService {
 
+    Context context;
     public PrintService(Context context){
+        this.context = context;
         new PrinterCouchBase(context);
         Config.requestAllPower((Activity) context);
     }
@@ -89,10 +92,7 @@ public class PrintService {
         return null;
     }
 
-    /**
-     * 把数据分发到指定名称的打印机
-     */
-    public boolean detchPrinter(String name,EscCommand esc){
+    public PortManager FindPrinter(String name){
         //判断Map初始化打印机
         PortManager mPort = Config.getPrinter(name);
         if ( mPort == null){
@@ -103,16 +103,28 @@ public class PrintService {
                 mPort = initPrinter(doc);
                 Config.putPrinter(doc.getString("name"),mPort);
             }else{
-                return false;
+                return null;
             }
         }
-        mPort.openPort();
-        try {
-            mPort.writeDataImmediately(esc.getCommand(), 0, esc.getCommand().size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return mPort;
+    }
 
+    /**
+     * 把数据分发到指定名称的打印机
+     */
+    public boolean detchPrinter(String name,EscCommand esc){
+        PortManager mPort = FindPrinter(name);
+        if (mPort == null){
+            Toast.makeText(context,"打印机不存在",Toast.LENGTH_LONG).show();
+            return false;
+        }else {
+            mPort.openPort();
+            try {
+                mPort.writeDataImmediately(esc.getCommand(), 0, esc.getCommand().size());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return true;
     }
 

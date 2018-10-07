@@ -22,7 +22,7 @@ public class PrintMessage {
     /**
      * 生成order发送票据
      */
-    public Vector<Byte> orderSendReceiptWithResponse(String clientname,int wType) {
+    public EscCommand orderSendReceiptWithResponse(String clientname,int wType) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
         String date = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");// 设置日期格式
@@ -217,7 +217,7 @@ public class PrintMessage {
             //esc.addPrintAndLineFeed();
 
         }
-       return esc.getCommand();
+       return esc;
     }
 
     /**
@@ -226,7 +226,7 @@ public class PrintMessage {
      * @param widthType
      * @return
      */
-    public Vector<Byte> resendPrint(String clientname,int widthType){
+    public EscCommand resendPrint(String clientname,int widthType){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
         String date = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");// 设置日期格式
@@ -467,13 +467,13 @@ public class PrintMessage {
         // 加入查询打印机状态，打印完成后，此时会接收到GpCom.ACTION_DEVICE_STATUS广播
         esc.addQueryPrinterStatus();
 
-        return esc.getCommand();
+        return esc;
     }
 
     /**
      * 结账打印小票
      */
-    public Vector<Byte> payPrint(String clientname,int widthType){
+    public EscCommand payPrint(String clientname,int widthType){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
         String date = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");// 设置日期格式
@@ -745,7 +745,7 @@ public class PrintMessage {
 
         }
 
-        return esc.getCommand();
+        return esc;
     }
     //80打印机 打印菜品
     private void printDish80(String temp,int length,String dishesName, EscCommand esc,float num,float total){
