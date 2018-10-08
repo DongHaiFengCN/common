@@ -25,6 +25,20 @@ public class Config {
         return map.get(address);
     }
 
+    /**
+     * 删除打印机
+     * @param name
+     * @return
+     */
+    public static boolean deleteMapPrinter(String name){
+        if (map.get(name) != null) {
+            map.remove(name, map.get(name));
+        }else{
+            return false;
+        }
+        return true;
+    }
+
     public static void requestAllPower(Activity context) {
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Document;
 import com.gprinter.command.EscCommand;
 import com.gprinter.io.BluetoothPort;
@@ -128,6 +129,17 @@ public class PrintService {
         return true;
     }
 
+    public void deletePrint(String name){
+        Config.deleteMapPrinter(name);
+        Document doc = getSinglePrint(name);
+        if (doc != null){
+            try {
+                PrinterCouchBase.getDb().delete(doc);
+            } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     //关闭打印机
     public void  closePort(PortManager portManager){

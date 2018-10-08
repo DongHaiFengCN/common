@@ -66,13 +66,7 @@ public class MainActivity extends AppCompatActivity {
         //------------------------- 测试数据部分------------------------
 //        ethernetPort1 = new EthernetPort("192.168.2.248", 9100);
 //        Log.e("DOAING", ethernetPort1.openPort() + " 第一个打开");
-        pinterPort = new PinterPort();
-        pinterPort.setPort("9100");
-        pinterPort.setAddress("192.168.2.248");
-        pinterPort.setTypePrint(Config.WIFI);
-        pinterPort.setName("吃饭");
-        printService = new PrintService(this);
-        printService.printerExist(pinterPort);
+        printService = new PrintService(MainActivity.this);
 
 
 
@@ -105,28 +99,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //
-//        findViewById(R.id.printb_bt).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        findViewById(R.id.printb_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //发起单次的查询命令
+                //printerChangeListener.openOncePrinterListener();
+                printService.deletePrint("吃饭");
+
+            }
+        });
 //
-//                //发起单次的查询命令
-//                printerChangeListener.openOncePrinterListener();
-//
-//            }
-//        });
-//
-//        findViewById(R.id.printc_bt).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //释放指定打印机的监听线程
+        findViewById(R.id.printc_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //释放指定打印机的监听线程
 //                if(printerChangeListener.freeWorkPool("101")){
 //
 //                    Toast.makeText(MainActivity.this,"移除了101的监听",Toast.LENGTH_SHORT).show();
 //                }
-//
-//            }
-//        });
+                pinterPort = new PinterPort();
+                pinterPort.setPort("9100");
+                pinterPort.setAddress("192.168.2.248");
+                pinterPort.setTypePrint(Config.WIFI);
+                pinterPort.setName("吃饭");
+                printService.printerExist(pinterPort);
+
+
+            }
+        });
 //        findViewById(R.id.printd_bt).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
