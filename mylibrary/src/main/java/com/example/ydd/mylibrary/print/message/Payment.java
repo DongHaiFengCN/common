@@ -3,20 +3,12 @@ package com.example.ydd.mylibrary.print.message;
 import java.util.List;
 
 public class Payment {
-    private float price;//单价
     private float totalPrice;//总计
     private List<Discounts> discountsList;//活动优惠
     private List<Discounts> payDetailList;//支付方式
     private float wipeZero;//抹零
     private float receivable;//应收
     private boolean isPay;//是否是结账
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public float getTotalPrice() {
         return totalPrice;

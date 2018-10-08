@@ -522,7 +522,7 @@ public class PrintMessage {
                     dishesName =  dishDoc.getName()+"(赠)";
                 }
                 float num =  dishDoc.getCount();
-                float total = printData.getPayment().getPrice();
+                float total = dishDoc.getPrice();
                 String temp;
                 if (dishDoc.getTasteName() != null) {
                     temp = dishDoc.getTasteName();
@@ -648,7 +648,7 @@ public class PrintMessage {
                     dishesName =  dishDoc.getName()+"(赠)";
                 }
                 float num =  dishDoc.getCount();
-                float total = printData.getPayment().getPrice();
+                float total = dishDoc.getPrice();
                 String temp;
                 if (dishDoc.getTasteName() != null) {
                     temp = dishDoc.getTasteName();

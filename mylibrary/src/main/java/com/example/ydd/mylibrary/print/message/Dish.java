@@ -11,7 +11,7 @@ public class Dish {
     private boolean isPromotion;//是否是套餐
     private List<String> promotionDishList;//套餐下的菜品名字
     private String description;//菜品备注
-
+    private float price;//单价
     public String getName() {
         return name;
     }
@@ -68,5 +68,11 @@ public class Dish {
         this.description = description;
     }
 
+    public float getPrice() {
+        return price;
+    }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
 }
