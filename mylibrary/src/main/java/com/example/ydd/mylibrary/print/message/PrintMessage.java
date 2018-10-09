@@ -172,13 +172,11 @@ public class PrintMessage {
                 }else if (dish.getGoodsType() == 2) {
                     dishesName =  dish.getName()+"(赠)";
                 }
-                esc.addText(dishesName);
                 String temp = dish.getTasteName();
 
                 float num = dish.getCount();
 
                 esc.addSetAbsolutePrintPosition((short) 0);
-                esc.addText(dishesName);
                 if (temp == null || "".equals(temp))//无口味
                 {
                     esc.addText(dishesName);
@@ -204,7 +202,7 @@ public class PrintMessage {
                     esc.addText("菜品备注：  " + dish.getDescription()+"\n");
                 }
                 //换行
-                //esc.addPrintAndLineFeed();
+                esc.addPrintAndLineFeed();
             }
             if (printData.getDescription() != null){
                 esc.addText("订单备注：  " + printData.getDescription()+"\n\n");
@@ -214,7 +212,7 @@ public class PrintMessage {
             if (printData.getEmployeeName() != null) {
                 esc.addText("操作员:  " + printData.getEmployeeName() +"\n\n\n");
             }
-            //esc.addPrintAndLineFeed();
+            esc.addPrintAndLineFeed();
 
         }
        return esc;

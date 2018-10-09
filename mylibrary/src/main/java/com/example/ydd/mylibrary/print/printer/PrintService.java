@@ -119,7 +119,10 @@ public class PrintService {
             Toast.makeText(context,"打印机不存在",Toast.LENGTH_LONG).show();
             return false;
         }else {
-            mPort.openPort();
+            Document doc = PrinterCouchBase.getSinglePrint(name);
+            if (doc.getInt("printerType") == 1) {
+                mPort.openPort();
+            }
             try {
                 mPort.writeDataImmediately(esc.getCommand(), 0, esc.getCommand().size());
             } catch (IOException e) {
