@@ -12,6 +12,7 @@ public class Dish {
     private List<String> promotionDishList;//套餐下的菜品名字
     private String description;//菜品备注
     private float price;//单价
+    private int goodsAlter;
     public String getName() {
         return name;
     }
@@ -74,5 +75,13 @@ public class Dish {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public int getGoodsAlter() {
+        return goodsAlter;
+    }
+
+    public void setGoodsAlter(int goodsAlter) {
+        this.goodsAlter = goodsAlter;
     }
 }

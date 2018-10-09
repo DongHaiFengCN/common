@@ -79,6 +79,9 @@ public class PrintMessage {
                 }else if (dish.getGoodsType() == 2) {
                     dishesName = dish.getName()+"(赠)";
                 }
+                if ( dish.getGoodsAlter() == 1){
+                    dishesName = "(改)  "+dishesName;
+                }
                 esc.addText(dishesName);
                 String temp = dish.getTasteName();
                 if (temp == null || "".equals(temp)) {
