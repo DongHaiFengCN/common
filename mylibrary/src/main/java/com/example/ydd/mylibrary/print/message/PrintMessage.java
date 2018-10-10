@@ -65,7 +65,9 @@ public class PrintMessage {
             esc.addText("\n");
 
             for (int i = 0; i < dishList.size(); i++) {
+                byte len = 0x01;
 
+                esc.addCutAndFeedPaper(len);
                 float num = 1; // 数量 默认为1
                 esc.addSelectCharacterFont(FONTA);
                 Dish dish = dishList.get(i);
@@ -166,6 +168,9 @@ public class PrintMessage {
             for (int i = 0; i < dishList.size(); i++)
 
             {
+                byte len = 0x01;
+
+                esc.addCutAndFeedPaper(len);
                 Dish dish = dishList.get(i);
                 String dishesName = "";
                 if (dish.getGoodsType() == 0) {
@@ -269,6 +274,9 @@ public class PrintMessage {
 
             esc.addText("\n");
             for (int i = 0; i < dishList.size(); i++) {
+                byte len = 0x01;
+
+                esc.addCutAndFeedPaper(len);
                 Dish goodsDic = dishList.get(i);
                 float num = 1; // 数量 默认为1
 
@@ -381,6 +389,9 @@ public class PrintMessage {
             for (int i = 0; i < dishList.size(); i++)
 
             {
+                byte len = 0x01;
+
+                esc.addCutAndFeedPaper(len);
                 Dish goodsDic = dishList.get(i);
                 String dishesName = goodsDic.getName();
 

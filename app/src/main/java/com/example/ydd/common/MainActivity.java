@@ -129,14 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        findViewById(R.id.printd_bt).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                printerChangeListener.freeWorkPool("201");
-//
-//            }
-//        });
+        findViewById(R.id.printd_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //printerChangeListener.freeWorkPool("201");
+                System.exit(0);
+
+            }
+        });
 //        findViewById(R.id.printe_bt).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
      */
     EscCommand sendReceiptWithResponse() {
         EscCommand esc = new EscCommand();
+        esc.addCutPaper();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 3);
         // 设置打印居中
@@ -193,11 +195,16 @@ public class MainActivity extends AppCompatActivity {
         esc.addSetHorAndVerMotionUnits((byte) 7, (byte) 0);
         esc.addSetAbsolutePrintPosition((short) 6);
         esc.addText("网络");
+        //esc.addCutPaper();
         esc.addSetAbsolutePrintPosition((short) 10);
         esc.addText("设备");
         esc.addPrintAndLineFeed();
 
         /* 打印图片 */
+        for(int i = 0 ; i < 5 ; i++){
+            esc.addCutPaper();
+            esc.addText(i+"\n");
+        }
         // 打印文字
         esc.addText("Print bitmap!\n");
 
