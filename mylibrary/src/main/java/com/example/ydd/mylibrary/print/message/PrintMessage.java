@@ -11,6 +11,7 @@ import java.util.Vector;
 import static com.gprinter.command.EscCommand.ENABLE.OFF;
 import static com.gprinter.command.EscCommand.ENABLE.ON;
 import static com.gprinter.command.EscCommand.FONT.FONTA;
+import static com.gprinter.command.EscCommand.FONT.FONTB;
 
 public class PrintMessage {
 
@@ -22,24 +23,15 @@ public class PrintMessage {
     /**
      * 生成order发送票据
      */
-    public EscCommand orderSendReceiptWithResponse(String clientname,int wType) {
+    public EscCommand orderSendReceiptWithResponse(int wType) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
         String date = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");// 设置日期格式
         String endtime = sdf.format(new Date());
         EscCommand esc = new EscCommand();
-        // 打印标题居中
-        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
-        // 设置字体宽高增倍
-        esc.addSelectPrintModes(FONTA, OFF, ON, ON, OFF); // 设置为倍高倍宽
-        esc.addText(clientname + "\n");// 打印文字
-
-        //打印并换行
-        esc.addPrintAndLineFeed();
-        // 打印文字
-
         esc.addSelectPrintModes(FONTA, OFF, OFF, OFF, OFF);// 取消倍高倍宽
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
+        // 打印文字
         String serNum = printData.getSerNum();
         String areaName = printData.getAreaName();
         String tableName = printData.getTableName();
@@ -47,27 +39,19 @@ public class PrintMessage {
         List<Dish> dishList = printData.getDishList();
         if(wType==2)//  80型宽度
         {
-
-            esc.addText("流水号:" + serNum + "\n");//流水号生成机制开发
-
-            esc.addText("房间:" + areaName + "   " + "桌位：" + tableName + "\n");// 打印文字
-
-            esc.addText("人数:" + currentPersions + "\n");//流水号生成机制开发
-
-            esc.addText("时间:" + date + " " + endtime + "\n"); // 时间
-
-
-            esc.addText("------------------------------------------\n");//42个空格，21个汉字
-            esc.addTurnEmphasizedModeOnOrOff(ON);
-            esc.addSelectCharacterFont(FONTA);
-            esc.addText("菜品名称                  数量         \n"); // 菜品名称(8)10   8 数量(4) 8
-            esc.addTurnEmphasizedModeOnOrOff(OFF);
-            esc.addText("\n");
-
             for (int i = 0; i < dishList.size(); i++) {
-                byte len = 0x01;
-
-                esc.addCutAndFeedPaper(len);
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
+                esc.addText("-----------------------------------------------\n");//42个空格，21个汉字
+                esc.addText("流水号:" + serNum + "\n");//流水号生成机制开发
+                esc.addText("房间:" + areaName + "   " + "桌位：" + tableName + "\n");// 打印文字
+                esc.addText("人数:" + currentPersions + "\n");//流水号生成机制开发
+                esc.addText("时间:" + date + " " + endtime + "\n"); // 时间
+                esc.addText("-----------------------------------------------\n");//42个空格，21个汉字
+                esc.addTurnEmphasizedModeOnOrOff(ON);
+                esc.addSelectCharacterFont(FONTA);
+                esc.addText("菜品名称                       数量         \n"); // 菜品名称(8)10   8 数量(4) 8
+                esc.addTurnEmphasizedModeOnOrOff(OFF);
+                esc.addText("\n");
                 float num = 1; // 数量 默认为1
                 esc.addSelectCharacterFont(FONTA);
                 Dish dish = dishList.get(i);
@@ -121,26 +105,24 @@ public class PrintMessage {
                     }
 
                 }
+                esc.addSelectPrintModes(FONTA, OFF, OFF, OFF, OFF);// 取消倍高倍宽
                 if (dish.getDescription() != null){
-                    esc.addText("菜品备注：  " + dish.getDescription()+"\n");
+                    esc.addText("\n菜品备注：  " + dish.getDescription()+"\n");
                 }
                 //换行
                 esc.addPrintAndLineFeed();
-
+                if (printData.getDescription() != null){
+                    esc.addText("订单备注：  " + printData.getDescription()+"\n");
+                }
+                esc.addText("-----------------------------------------------\n");//42个空格，21个汉字
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.RIGHT);
+                if (printData.getEmployeeName() != null) {
+                    esc.addText("操作员:  " + printData.getEmployeeName() +"\n");
+                }
+                esc.addPrintAndLineFeed();
+                byte len = 0x01;
+                esc.addCutAndFeedPaper(len);
             }
-            if (printData.getDescription() != null){
-                esc.addText("订单备注：  " + printData.getDescription()+"\n\n");
-            }
-            esc.addSelectJustification(EscCommand.JUSTIFICATION.RIGHT);
-            if (printData.getEmployeeName() != null) {
-                esc.addText("操作员:  " + printData.getEmployeeName() +"\n\n\n");
-            }
-            esc.addPrintAndLineFeed();
-
-
-            byte len = 0x01;
-
-            esc.addCutAndFeedPaper(len);
 
         }else //58型打印机
         {
@@ -227,27 +209,16 @@ public class PrintMessage {
     }
 
     /**
-     * 重新发送打印模板
-     * @param clientname
+     * 重新发送打印模
      * @param widthType
      * @return
      */
-    public EscCommand resendPrint(String clientname,int widthType){
+    public EscCommand resendPrint(int widthType){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
         String date = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");// 设置日期格式
         String endtime = sdf.format(new Date());
         EscCommand esc = new EscCommand();
-        // 打印标题居中
-        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
-        // 设置字体宽高增倍
-        esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.ON, EscCommand.ENABLE.ON, EscCommand.ENABLE.OFF); // 设置为倍高倍宽
-        esc.addText(clientname + "\n");// 打印文字
-
-        //打印并换行
-        esc.addPrintAndLineFeed();
-        // 打印文字
-
         esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF);// 取消倍高倍宽
 
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
@@ -259,24 +230,22 @@ public class PrintMessage {
         if(widthType==2)//  80型宽度
         {
 
-            esc.addText("流水号:" + serNum + "\n");//流水号生成机制开发
-
-            esc.addText("房间:" + areaName + "   " + "桌位：" + tableName + "\n");// 打印文字
-
-            esc.addText("人数:" + currentPersons + "\n");//流水号生成机制开发
-
-            esc.addText("时间:" + date + " " + endtime + "\n"); // 时间
-
-
-            esc.addText("------------------------------------------\n");//42个空格，21个汉字
-
-            esc.addText("菜品名称                  数量         \n"); // 菜品名称(8)10   8 数量(4) 8
-
-            esc.addText("\n");
             for (int i = 0; i < dishList.size(); i++) {
-                byte len = 0x01;
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
+                esc.addText("流水号:" + serNum + "\n");//流水号生成机制开发
 
-                esc.addCutAndFeedPaper(len);
+                esc.addText("房间:" + areaName + "   " + "桌位：" + tableName + "\n");// 打印文字
+
+                esc.addText("人数:" + currentPersons + "\n");//流水号生成机制开发
+
+                esc.addText("时间:" + date + " " + endtime + "\n"); // 时间
+
+
+                esc.addText("------------------------------------------\n");//42个空格，21个汉字
+
+                esc.addText("菜品名称                  数量         \n"); // 菜品名称(8)10   8 数量(4) 8
+
+                esc.addText("\n");
                 Dish goodsDic = dishList.get(i);
                 float num = 1; // 数量 默认为1
 
@@ -342,25 +311,19 @@ public class PrintMessage {
                     esc.addText("菜品备注：  " + goodsDic.getDescription()+"\n");
                 }
                 esc.addPrintAndLineFeed();
-            }
-            if (printData != null){
-                if (printData.getDescription() != null){
-                    esc.addText("订单备注：  " + printData.getDescription() +"\n\n");
+                if (printData != null){
+                    if (printData.getDescription() != null){
+                        esc.addText("订单备注：  " + printData.getDescription() +"\n");
+                    }
                 }
-            }
-            esc.addSelectJustification(EscCommand.JUSTIFICATION.RIGHT);
-            if (printData.getEmployeeName() != null) {
-                esc.addText("操作员:  " + printData.getEmployeeName()+"\n\n\n");
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.RIGHT);
+                if (printData.getEmployeeName() != null) {
+                    esc.addText("操作员:  " + printData.getEmployeeName()+"\n");
+                }
+                byte len = 0x01;
+                esc.addCutAndFeedPaper(len);
             }
             esc.addPrintAndLineFeed();
-
-
-            byte len = 0x01;
-
-            esc.addCutAndFeedPaper(len);
-
-
-
         }
 
         else //58型打印机

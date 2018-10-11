@@ -15,8 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.couchbase.lite.Dictionary;
+import com.couchbase.lite.Document;
 import com.example.ydd.mylibrary.print.config.PrinterChangeListener;
 import com.example.ydd.mylibrary.print.config.WorkRunnable;
+import com.example.ydd.mylibrary.print.message.Dish;
+import com.example.ydd.mylibrary.print.message.PrintData;
+import com.example.ydd.mylibrary.print.message.PrintMessage;
 import com.example.ydd.mylibrary.print.printer.Config;
 import com.example.ydd.mylibrary.print.printer.PinterPort;
 import com.example.ydd.mylibrary.print.printer.PrintService;
@@ -26,6 +31,8 @@ import com.gprinter.io.EthernetPort;
 import com.gprinter.io.PortManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private PrinterChangeListener printerChangeListener;
     private PrintService printService;
     private PinterPort pinterPort;
+    private PrintMessage printMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,8 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //开启周期监听，当前设置2000毫秒一个监听
                 //printerChangeListener.openPeriodPrinterListener(2000L);
+                establishPrintData();
 
-                printService.detchPrinter("吃饭",sendReceiptWithResponse());
+                printService.detchPrinter("吃饭",printMessage.orderSendReceiptWithResponse(2));
 
             }
         });
@@ -157,6 +166,34 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
+    }
+
+    private void establishPrintData(){
+
+        PrintData printData = new PrintData();
+
+        List<Dish> dishList = new ArrayList<>();
+        for (int i = 0 ; i < 2 ; i++){
+            dishList.add(transformDish());
+        }
+        printData.setDishList(dishList);
+        printData.setEmployeeName("管理员");
+        printData.setCurrentPersons(2);
+        printData.setTableName("001");
+        printData.setSerNum("001");
+        printData.setAreaName("大厅");
+        printMessage = new PrintMessage(printData);
+    }
+
+    private Dish transformDish(){
+        Dish dish = new Dish();
+        dish.setName("土豆丝");
+        dish.setGoodsType(0);
+        dish.setCount(1);
+        dish.setGoodsAlter(0);
+        dish.setPromotion(false);
+        dish.setDescription("");
+        return dish;
     }
 
     /**
